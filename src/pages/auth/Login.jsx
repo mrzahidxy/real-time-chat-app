@@ -26,8 +26,6 @@ const Login = () => {
 
   const handleSubmit = async (values, { setSubmitting }) => {
     const { email, password } = values;
-    // sign in
-    // const res = await createUserWithEmailAndPassword(auth, email, password);
 
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
@@ -50,10 +48,9 @@ const Login = () => {
         validationSchema={validationSchema}
         onSubmit={handleSubmit}
       >
-        <Form className="bg-white space-y-2 shadow p-5 rounded-md ">
-          <div>
-            <div>Logo</div>
-            <h1 className="text-xl font-semibold ">Register</h1>
+        <Form className="w-1/4 bg-white space-y-2 shadow p-5 rounded-md ">
+          <div className="mb-4">
+            <h1 className="text-4xl font-medium mb-2 italic text-blue-500">Lippy</h1>
             <span className="text-sm ">
               Welcome, Let's coonect with your friend
             </span>
@@ -76,7 +73,7 @@ const Login = () => {
             Don't have account? <Link to={'/auth/signup'}>Register</Link>
           </div>
 
-          <div className="flex justify-center pt-6">
+          <div className="flex justify-center pt-4">
             <SubmitButton text="Log in" />
           </div>
         </Form>

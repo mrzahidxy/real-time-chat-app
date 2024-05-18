@@ -7,17 +7,29 @@ const InputField = ({
   error,
   helperText,
   disabled,
+  textarea = false,
   ...rest
 }) => {
   return (
     <div className="flex flex-col gap-2">
       {label && <label>{label}</label>}
-      <input
-        placeholder={placeholder}
-        className={`outline-0 border border-gray-500 h-10 pl-2 rounded-md ${className}`}
-        disabled={disabled}
-        {...rest}
-      />
+      {textarea ? (
+        <textarea
+          rows={3}
+          placeholder={placeholder}
+          className={`outline-0 border border-gray-500 pl-2 rounded-md ${className}`}
+          disabled={disabled}
+          {...rest}
+        />
+      ) : (
+        <input
+          placeholder={placeholder}
+          className={`outline-0 border border-gray-500 h-10 pl-2 rounded-md ${className}`}
+          disabled={disabled}
+          {...rest}
+        />
+      )}
+
       {error && <span className="text-red-600">{helperText}</span>}
     </div>
   );

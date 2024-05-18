@@ -1,26 +1,19 @@
-import { useContext, useEffect, useState } from "react";
-import Message from "../../components/messenger/Message";
+import { useContext, useEffect, useRef, useState } from "react";
+import Message from "../../components/messenger/Message.component";
 import { AuthContext } from "../../context/AuthProvider";
 import Sidebar from "../../components/Sidebar";
 import {
   onSnapshot,
   doc,
-  updateDoc,
-  arrayUnion,
-  Timestamp,
 } from "firebase/firestore";
 import { db } from "../../../firebase";
 import { ChatContext } from "../../context/ChatContext";
-import { v4 as uuid } from "uuid";
+import MessageInput from "../../components/messenger/MessageInput.component";
 
 const Messenger = () => {
   const { currentUser } = useContext(AuthContext);
   const { data } = useContext(ChatContext);
   const [messages, setMessages] = useState([]);
-  const [text, setText] = useState("");
-
-  // console.log("other", data?.user)
-  // console.log("user", currentUser)
 
   useEffect(() => {
     const unSub = onSnapshot(doc(db, "chats", data.chatId), (doc) => {
@@ -32,65 +25,51 @@ const Messenger = () => {
     };
   }, [data.chatId]);
 
-  const handleSend = async () => {
-    await updateDoc(doc(db, "chats", data.chatId), {
-      messages: arrayUnion({
-        id: uuid(),
-        text,
-        senderId: currentUser.uid,
-        date: Timestamp.now(),
-      }),
-    });
 
-    setText("");
-  };
-
-  console.log(messages.length > 0);
 
   return (
-    <div className="grid grid-cols-3 border">
+    <div className="h-screen grid lg:grid-cols-3">
       {/* Sidebar */}
-      <div className="space-y-4 hidden md:block">
+      <div className="space-y-4 hidden lg:block">
         <Sidebar />
       </div>
 
-      {/* Other User Info */}
-      <div className="col-span-2 border-l-2">
+      <div className="lg:col-span-2 border-l-2">
         {/* Messages */}
-        {messages.length > 0 ? (
-          <div>
-            <div className="flex items-center gap-2 p-2 border-b-2">
+        {data?.chatId !== "null" ? (
+          <>
+            <div className="flex items-center gap-2 py-4 px-6 border-b-2">
               <img
-                src={data?.user?.photoURL}
+                src={data?.user?.photoURL ?? "./user-not-found.jpeg"}
                 alt="display image"
-                className="w-10 h-10 rounded-full object-fill"
+                className="w-14 h-14 rounded-full object-fill"
               />
               <span className="capitalize font-semibold text-black">
                 {data?.user?.displayName ?? ""}
               </span>
             </div>
 
-            <div className="flex flex-col gap-2 bg-white h-[calc(100vh-7rem)]">
-              {messages.map((m) => (
-                <Message
-                  message={m}
-                  own={m.senderId === currentUser.uid}
-                  key={m.id}
-                />
-              ))}
-
-              <div className="flex flex-row mt-auto">
-                <input
-                  className="w-full border py-2 focus:outline-blue-200"
-                  onChange={(e) => setText(e.target.value)}
-                  value={text}
-                />
-                <button className="bg-white border px-4" onClick={handleSend}>
-                  Send
-                </button>
+            <div className="flex flex-col gap-2 bg-white h-[calc(100vh-6rem)]">
+              <div
+                className="flex-1 overflow-y-auto scroll-smooth"
+                style={{
+                  scrollbarWidth: "thin",
+                  scrollbarColor: "#4A90E2 #E4E4E4",
+                }}
+              >
+                {messages.map((m, index) => (
+                  <Message
+                    message={m}
+                    own={m.senderId === currentUser.uid}
+                    key={m.id}
+                   
+                  />
+                ))}
               </div>
+
+              <MessageInput />
             </div>
-          </div>
+          </>
         ) : (
           <div className="text-center font-bold text-black text-2xl flex justify-center items-center h-[calc(100vh-7rem)]">
             Start a conversation

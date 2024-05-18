@@ -8,7 +8,6 @@ import {
   query,
   serverTimestamp,
   setDoc,
-  updateDoc,
   where,
 } from "firebase/firestore";
 import { AuthContext } from "../context/AuthProvider";
@@ -96,20 +95,25 @@ const Search = () => {
         />
       </div>
       {user && (
-        <div
-          className="flex items-center gap-2 cursor-pointer hover:bg-gray-200 px-4 py-2 rounded-r-lg"
-          onClick={handleUserSelect}
-        >
-          <img
-            src={user?.photoURL}
-            alt="display image"
-            className="w-10 h-10 rounded-full object-fill"
-          />
-          <span className="capitalize font-semibold text-black">
-            {user?.username ?? ""}
-          </span>
+        <div className="px-2">
+          <span className="font-medium">Search results...</span>
+
+          <div
+            className="flex items-center gap-2 cursor-pointer hover:bg-gray-200 py-4"
+            onClick={handleUserSelect}
+          >
+            <img
+              src={user?.photoURL}
+              alt="display image"
+              className="w-14 h-14 rounded-full object-fill"
+            />
+            <span className="capitalize font-semibold text-black">
+              {user?.username ?? ""}
+            </span>
+          </div>
         </div>
       )}
+      <hr />
     </div>
   );
 };
