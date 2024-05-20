@@ -48,7 +48,7 @@ const Login = () => {
         validationSchema={validationSchema}
         onSubmit={handleSubmit}
       >
-        <Form className="w-1/4 bg-white space-y-2 shadow p-5 rounded-md ">
+        <Form className="lg:w-1/4 bg-white space-y-2 shadow p-5 rounded-md ">
           <div className="mb-4">
             <h1 className="text-4xl font-medium mb-2 italic text-blue-500">Lippy</h1>
             <span className="text-sm ">
@@ -70,7 +70,7 @@ const Login = () => {
             }}
           />
           <div>
-            Don't have account? <Link to={'/auth/signup'}>Register</Link>
+            Don't have account? <Link to={'/auth/signup'} className="text-blue-500">Register</Link>
           </div>
 
           <div className="flex justify-center pt-4">

@@ -80,7 +80,7 @@ const SignUp = () => {
         validationSchema={validationSchema}
         onSubmit={handleSubmit}
       >
-        <Form className="w-1/4 bg-white space-y-2 shadow p-5 rounded-md">
+        <Form className="lg:w-1/4 bg-white space-y-2 shadow p-5 rounded-md">
           <div className="mb-4">
           <h1 className="text-4xl font-medium mb-2 italic text-blue-500">Lippy</h1>
             <span className="text-sm">
@@ -110,7 +110,7 @@ const SignUp = () => {
           <FormikBulbFileInputField name="file" />
 
           <div>
-            Already have an account? <Link to={'/auth/login'}>Login</Link>
+            Already have an account? <Link to={'/auth/login'} className="text-blue-500">Login</Link>
           </div>
 
           <div className="flex justify-center pt-4">
