@@ -91,7 +91,7 @@ const MessageInput = () => {
       validationSchema={validationSchema}
       onSubmit={handleSubmit}
     >
-      {({ submitForm, setFieldValue }) => (
+      {({ submitForm }) => (
         <Form className="relative w-full border border-t-0 border-gray-500 rounded-md pb-1">
           <FormikInputField
             name="text"

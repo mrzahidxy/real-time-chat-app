@@ -9,7 +9,7 @@ const Message = ({ message, own }) => {
   }, [message]);
 
   return (
-    <div ref={ref} className={`${own ? "justify-end" : "justify-start"} flex p-4`}>
+    <div ref={ref} className={`${own ? "justify-end" : "justify-start"} flex px-2`}>
       <div className="flex flex-col">
         {message?.text && (
           <span
