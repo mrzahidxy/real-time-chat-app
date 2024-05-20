@@ -33,8 +33,9 @@ const Conversations = ({ setVisible }) => {
   }, [currentUser?.uid]);
 
   const handleSelect = (userInfo) => {
-   setVisible && setVisible(false);
+   
     dispatch({ type: "CHANGE_USER", payload: userInfo });
+    setVisible && setVisible(false);
   };
 
   if (loading) {
