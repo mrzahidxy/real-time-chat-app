@@ -9,6 +9,7 @@ const BulbFileInputField = ({
   disabled = false,
   field, // Formik field object
   form, // Formik form object
+  clearPreviewImageCallback,
   ...rest
 }) => {
   const [previewImage, setPreviewImage] = useState(null);
@@ -30,24 +31,33 @@ const BulbFileInputField = ({
     form.setFieldValue(field.name, file);
   };
 
+  clearPreviewImageCallback.current = () => setPreviewImage(null); 
+
   return (
     <div className="flex flex-col gap-2">
       {label && <label>{label}</label>}
-      <div className="relative">
-        {previewImage && (
-          <img
-            src={previewImage}
-            alt="Preview"
-            className="absolute h-10 w-10 left-2 top-3 pointer-events-none"
-          />
-        )}
+      <div className="relative flex gap-2">
+        <img
+          src="/attach.png"
+          className="w-8 h-8 cursor-pointer p-1"
+          alt=""
+          onClick={() => document.getElementById("upload").click()}
+        />
 
         <input
+          className="hidden"
+          id="upload"
           type="file"
           disabled={disabled}
           onChange={handleFileChange}
           {...rest} // Pass other props
         />
+
+        {previewImage && (
+          <div className="relative">
+            <img src={previewImage} alt="Preview" className="h-16" />
+          </div>
+        )}
       </div>
       {error && <span className="text-red-600">{helperText}</span>}
     </div>
@@ -55,6 +65,7 @@ const BulbFileInputField = ({
 };
 
 const FormikBulbFileInputField = ({ inputFieldProps, ...rest }) => {
+  const clearPreviewImageCallback = { current: null };
   return (
     <Field {...rest}>
       {({ field, form, meta }) => {
@@ -69,6 +80,7 @@ const FormikBulbFileInputField = ({ inputFieldProps, ...rest }) => {
             form={form}
             error={hasError}
             helperText={displayHelperText}
+            clearPreviewImageCallback={clearPreviewImageCallback}
             {...inputFieldProps} // Pass additional props
           />
         );

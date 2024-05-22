@@ -1,6 +1,6 @@
 import { useFormikContext } from "formik";
 
-const SubmitButton = ({className, text}) => {
+const SubmitButton = ({className, text, loadingMessage="loading"}) => {
   const { isSubmitting } = useFormikContext();
 
   return (
@@ -9,7 +9,7 @@ const SubmitButton = ({className, text}) => {
       disabled={isSubmitting}
       className={`bg-blue-500 text-white w-32 h-10 text-center font-medium rounded-md ${className}`}
     >
-      {isSubmitting ? "Loading...." : text}
+      {isSubmitting ? loadingMessage : text}
     </button>
   );
 };

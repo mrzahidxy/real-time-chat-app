@@ -8,7 +8,6 @@ import {
   query,
   serverTimestamp,
   setDoc,
-  updateDoc,
   where,
 } from "firebase/firestore";
 import { AuthContext } from "../context/AuthProvider";
@@ -36,10 +35,13 @@ const Search = () => {
   };
 
   const handleUserSelect = async () => {
+    if (!user) return;
+
     const combinedId =
-      currentUser.uid > user.uid
-        ? currentUser.uid + user.uid
-        : user.uid + currentUser.uid;
+      currentUser?.uid > user?.uid
+        ? currentUser?.uid + user.uid
+        : user?.uid + currentUser?.uid;
+
     try {
       const res = await getDoc(doc(db, "chats", combinedId));
 
@@ -47,13 +49,13 @@ const Search = () => {
         await setDoc(doc(db, "chats", combinedId), { messages: [] });
 
         await setDoc(
-          doc(db, "userChats", currentUser.uid),
+          doc(db, "userChats", currentUser?.uid),
           {
             [combinedId]: {
               userInfo: {
-                uid: user.uid,
-                displayName: user.username,
-                photoURL: user.photoURL,
+                uid: user?.uid,
+                displayName: user?.username,
+                photoURL: user?.photoURL,
               },
               date: serverTimestamp(),
             },
@@ -62,13 +64,13 @@ const Search = () => {
         );
 
         await setDoc(
-          doc(db, "userChats", user.uid),
+          doc(db, "userChats", user?.uid),
           {
             [combinedId]: {
               userInfo: {
-                uid: currentUser.uid,
+                uid: currentUser?.uid,
                 displayName: currentUser?.displayName,
-                photoURL: currentUser.photoURL,
+                photoURL: currentUser?.photoURL,
               },
               date: serverTimestamp(),
             },
@@ -86,7 +88,7 @@ const Search = () => {
 
   return (
     <div className="flex flex-col px-2">
-      <div className="flex flex-row">
+      <div className="flex flex-row relative shadow-md">
         <input
           className="w-full relative h-12 pl-4 rounded-l-lg border focus:outline-blue-200"
           placeholder="Search your friend..."
@@ -94,22 +96,28 @@ const Search = () => {
           onKeyDown={(e) => handleUserSearch(e)}
           value={searchQuery}
         />
+        <img src="/search-icon.png" className="w-6 h-6 absolute right-1 top-3"/>
       </div>
       {user && (
-        <div
-          className="flex items-center gap-2 cursor-pointer hover:bg-gray-200 px-4 py-2 rounded-r-lg"
-          onClick={handleUserSelect}
-        >
-          <img
-            src={user?.photoURL}
-            alt="display image"
-            className="w-10 h-10 rounded-full object-fill"
-          />
-          <span className="capitalize font-semibold text-black">
-            {user?.username ?? ""}
-          </span>
+        <div className="px-2">
+          <span className="font-medium">Search results...</span>
+
+          <div
+            className="flex items-center gap-2 cursor-pointer hover:bg-gray-200 py-4"
+            onClick={handleUserSelect}
+          >
+            <img
+              src={user?.photoURL}
+              alt="display image"
+              className="w-14 h-14 rounded-full object-fill"
+            />
+            <span className="capitalize font-semibold text-black">
+              {user?.username ?? ""}
+            </span>
+          </div>
         </div>
       )}
+      <hr />
     </div>
   );
 };

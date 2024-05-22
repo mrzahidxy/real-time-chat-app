@@ -1,7 +1,7 @@
 import { Form, Formik } from "formik";
 import * as Yup from "yup";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { auth, storage, db } from "../../../firebase";
@@ -80,12 +80,11 @@ const SignUp = () => {
         validationSchema={validationSchema}
         onSubmit={handleSubmit}
       >
-        <Form className="bg-white space-y-2 shadow p-5 rounded-md ">
-          <div>
-            <div>Logo</div>
-            <h1 className="text-xl font-semibold ">Register</h1>
-            <span className="text-sm ">
-              Welcome, Let's coonect with your friend
+        <Form className="lg:w-1/4 bg-white space-y-2 shadow p-5 rounded-md">
+          <div className="mb-4">
+          <h1 className="text-4xl font-medium mb-2 italic text-blue-500">Lippy</h1>
+            <span className="text-sm">
+              Welcome, Let's conect with your friend
             </span>
             <div className="text-red-500">{error}</div>
           </div>
@@ -110,7 +109,11 @@ const SignUp = () => {
 
           <FormikBulbFileInputField name="file" />
 
-          <div className="flex justify-center pt-6">
+          <div>
+            Already have an account? <Link to={'/auth/login'} className="text-blue-500">Login</Link>
+          </div>
+
+          <div className="flex justify-center pt-4">
             <SubmitButton text="Sign up" />
           </div>
         </Form>
